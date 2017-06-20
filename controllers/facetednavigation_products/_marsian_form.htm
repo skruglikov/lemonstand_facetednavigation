@@ -1,0 +1,32 @@
+<div id="marsian_form">
+	<h2>Product Marsian</h2>
+	<div class="content">
+		<div class="form300">
+			<?= Phpr_Form::openTag() ?>
+				<? if (!isset($fatalError)): ?>
+					<? $this->formRender($marsian) ?>
+
+					<?= backend_ajax_button('Save', 'onAddMarsian', array('class'=>'default'),
+						"loadIndicator: {injectInElement: true},
+						onSuccess: updateMarsianList.pass('$session_key')") ?>
+					<?= backend_button('Cancel', array('onclick'=>'return cancelPopup()')) ?>
+				
+					<script type="text/javascript">
+						$('marsian_form').addEvent('popupLoaded', function(){
+							$('<?= $this->formGetUniquePrefix()?>FacetedNavigation_Product_facet_id').focus();
+							init_marsian_form();
+						});
+					</script>
+			
+					<div class="clear"></div>
+					<input type="hidden" name="product_session_key" value="<?= h($session_key) ?>"/>
+					<input type="hidden" name="marsian_id" value="<?= $marsian_id ?>"/>
+				<? else: ?>
+					<?= flash() ?>
+					<?= backend_button('Cancel', array('onclick'=>'return cancelPopup()')) ?>
+					<div class="clear"></div>
+				<? endif ?>
+			</form>
+		</div>
+	</div>
+</div>

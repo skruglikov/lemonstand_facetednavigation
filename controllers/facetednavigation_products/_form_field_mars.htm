@@ -1,0 +1,36 @@
+<li class="field">
+	<div class="toolbar listToolbar">
+		<a class="imageLink new_document img_noBottomPading" href="#" onclick="$('marsian_id').value = ''; new PopupForm('onLoadMarsForm', {ajaxFields: $('marsian_id').getForm()}); return false;">Add mars</a>
+
+		<div class="clear"></div>
+	</div>
+	<div id="mars_list<?= $this->formGetEditSessionKey() ?>" class="clear relative">
+		<? $this->renderPartial('mars_list') ?>
+	</div>
+	
+	<input type="hidden" name="marsian_id" id="marsian_id" value=""/>
+
+	<script type="text/javascript">
+		function updateMarsianList(session_key)
+		{
+			cancelPopup();
+
+			$('mars_list'+session_key).getForm().sendPhpr(
+				'onUpdateMarsianList',
+				{
+					update: 'mars_list'+session_key,
+					loadIndicator: {
+						show: true,
+						element: 'mars_list'+session_key,
+						hideOnSuccess: true,
+						injectInElement: true,
+						src: 'phproad/resources/images/form_load_30x30.gif'
+					}
+					// onSuccess: function(){
+						// make_mars_sortable(session_key);
+					// }
+				}
+			)
+		}
+	</script>
+</li>

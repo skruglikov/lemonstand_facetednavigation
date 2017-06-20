@@ -1,0 +1,49 @@
+<?
+	$values = $form_model->list_related_records_deferred('facet_values', $this->formGetEditSessionKey());
+?>
+
+<table class="simpleList">
+	<thead>
+		<tr>
+			<? if ($values->count): ?>
+				<th class="iconCell">&nbsp;</th>
+			<? endif ?>
+			<th>Name</th>
+			<th>Description</th>
+			<th>URL Name</th>
+			<th class="<?= !$values->count ? 'last' : null ?>">Option key</th>
+			<? if ($values->count): ?>
+				<th class="iconCell last">&nbsp;</th>
+			<? endif ?>
+		</tr>
+	</thead>
+
+	<tbody id="facet_values_list_body">
+		<? if (!$values->count): ?>
+			<tr class="noData">
+				<td colspan="4" class="last">There are no attribute values defined.</td>
+			</tr>
+		<? else: ?>
+			<? foreach ($values as $value): 
+				$onClick = "$('facet_value_id').value = '{$value->id}'; new PopupForm('onLoadFacetValueForm', {ajaxFields: $('facet_value_id').getForm(), closeByEsc: false}); return false;";
+			?>
+				<tr class="<?= Backend_Html::zebra('attribute_value') ?>">
+					<? if ($values->count): ?>
+						<td class="iconCell">
+							<a href="#" class="row_drag_handle value_sort_handle" onclick="return false" title="Reorder values">Reorder values</a>
+							<input class="value_id" value="<?= $value->id ?>" type="hidden"/>
+							<input class="value_order" value="<?= $value->front_end_sort_order ?>" type="hidden"/>
+						</td>
+					<? endif ?>
+					<td onclick="<?= $onClick ?>" class="link"><a href="#" onclick="<?= $onClick ?>"><?= h($value->displayField('name', 'list')) ?></a></td>
+					<td onclick="<?= $onClick ?>" class="link"><a href="#" onclick="<?= $onClick ?>"><?= h($value->displayField('description', 'list')) ?></a></td>
+					<td onclick="<?= $onClick ?>" class="link"><a href="#" onclick="<?= $onClick ?>"><?= h($value->displayField('url_name', 'list')) ?></a></td>
+					<td onclick="<?= $onClick ?>" class="link"><a href="#" onclick="<?= $onClick ?>"><?= h($value->displayField('option_key', 'list')) ?></a></td>
+					<? if ($values->count): ?>
+						<td class="iconCell last"><a onclick="$('facet_value_id').value = '<?= $value->id ?>'; return $(this).getForm().sendPhpr('onDeleteFacetValue', {confirm: 'Do you really want to delete this value?', update: 'facet_values_list', loadIndicator: {show: false}});" title="Delete value" class="deleteDocument" href="#">Delete</a></td>
+					<? endif ?>
+				</tr>
+			<? endforeach ?>
+		<? endif ?>
+	</tbody>
+</table>

@@ -1,0 +1,40 @@
+<div id="facet_value_form">
+
+	<h2>New Value</h2>
+	
+	<div class="content">
+
+		<div class="form300">
+			
+			<?= Phpr_Form::openTag(array('id'=>'facet_value_form_element')) ?>
+
+				<? if (!isset($fatalError)): ?>
+					<? $this->formRender($value) ?>
+
+					<?= backend_ajax_button('Save', 'onSaveFacetValue', array(
+						'id'=>'save_facet_value_btn'), "
+							loadIndicator: {injectInElement: true},
+							onSuccess: updateFacetValuesList,
+							prepareFunction: function(){phprTriggerSave();}
+					") ?>
+					<?= backend_button('Cancel', array('onclick'=>'return cancelPopup()')) ?>
+					
+					<div class="clear"></div>
+					<input type="hidden" name="set_session_key" value="<?= h($session_key) ?>"/>
+					<input type="hidden" name="value_id" value="<?= $value_id ?>"/>
+					<input type="hidden" name="phpr_uploader_model_class" value="<?= get_class($value) ?>"/>
+					<input type="hidden" name="phpr_uploader_model_id" value="<?= $value->id ?>"/>
+					<input type="hidden" name="form_prefix" value="<?= $this->formGetUniquePrefix() ?>">
+				<? else: ?>
+					<?= flash() ?>
+					<?= backend_button('Cancel', array('onclick'=>'return cancelPopup()')) ?>
+					<div class="clear"></div>
+				<? endif ?>
+
+			</form>
+
+		</div>
+
+	</div>
+
+</div>

@@ -1,0 +1,9 @@
+<? if (!isset($list_checked_records)) $list_checked_records = array(); ?>
+<td class="iconCell">
+	<a href="#" class="row_drag_handle sort_handle" onclick="new Event(event).stop(); return false">Reorder attributes</a>
+	<input class="facet_id" value="<?= $model->id ?>" type="hidden"/>
+	<input class="facet_order" value="<?= $model->front_end_sort_order ?>" type="hidden"/>
+</td>
+<td class="checkbox">
+	<input name="list_ids[]" <?= Phpr_Form::checkboxState(in_array($model->get_primary_key_value(), $list_checked_records)) ?> class="list_cb" type="checkbox" value="<?= $model->get_primary_key_value() ?>" onclick="if (!this.checked) $(this).findParent('table').getElement('thead input.list_head_cb').cb_uncheck()"/>
+</td>

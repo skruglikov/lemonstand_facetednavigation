@@ -1,0 +1,44 @@
+<?
+	$mars = $form_model->list_related_records_deferred('mars', $this->formGetEditSessionKey());
+?>
+
+<table class="simpleList">
+	<thead>
+		<tr>
+			<? if ($mars->count): ?>
+				<th class="iconCell">&nbsp;</th>
+			<? endif ?>
+			<th>Attribute</th>
+			<th class="<?= !$mars->count ? 'last' : null ?>">Value</th>
+			<? if ($mars->count): ?>
+				<th class="iconCell last">&nbsp;</th>
+			<? endif ?>
+		</tr>
+	</thead>
+
+	<tbody id="marsians_list_body<?= $this->formGetEditSessionKey() ?>">
+		<? if (!$mars->count): ?>
+			<tr class="noData">
+				<td colspan="3" class="last">There are no facet.</td>
+			</tr>
+		<? else: ?>
+			<? foreach ($mars as $m): 
+				$onClick = "$('marsian_id').value = '{$m->id}'; new PopupForm('onLoadMarsForm', {ajaxFields: $('marsian_id').getForm()}); return false;";
+			?>
+				<tr class="<?= Backend_Html::zebra('custom_attribute') ?>">
+					<td class="iconCell">
+						<a href="#" class="row_drag_handle sort_handle" onclick="return false" title="Reorder attributes">Reorder facet</a>
+
+						<input class="marsian_id" value="<?= $m->id ?>" type="hidden"/>
+						<input class="marsian_order" value="<?= $m->sort_order ?>" type="hidden"/>
+					</td>
+
+					<td onclick="<?= $onClick ?>" class="link"><a href="#" onclick="<?= $onClick ?>"><?= h($m->displayField('name', 'list')) ?></a></td>
+					<td onclick="<?= $onClick ?>" class="link"><a href="#" onclick="<?= $onClick ?>"><?= h($m->displayField('value', 'list')) ?></a></td>
+
+					<td class="iconCell last"><a onclick="$('marsian_id').value = '<?= $m->id ?>'; return $(this).getForm().sendPhpr('onDeleteMarsian', {confirm: 'Do you really want to delete this marsian?', update: 'mars_list<?= $this->formGetEditSessionKey() ?>', loadIndicator: {show: false}});" title="Delete marsian" class="deleteDocument" href="#">Delete</a></td>
+				</tr>
+			<? endforeach ?>
+		<? endif ?>
+	</tbody>
+</table>
